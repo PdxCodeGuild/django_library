@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Code Guild Library!
+{% endblock title %}   
+
+{% block content %}
+    <h1>Library!</h1>
+    {% for book in books %}
+    <div>
+        <h3>{{ book.title }}</h3>
+        <ul>
+            <li>Author: {{ book.author.full_name }}</li>
+            <li>Page Count: {{ book.page_count }}</li>
+        </ul>
+        {% if not book.checked_out %}
+        <form method="POST" action="{% url 'books:checkout' pk=book.pk %}">
+            {% csrf_token %}
+            <button>Check Out</button>
+        </form>
+        {% else %}
+        <form method="POST" action="{% url 'books:checkin' pk=book.pk %}">
+            {% csrf_token %}
+            <button>Check In</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endblock content %}
